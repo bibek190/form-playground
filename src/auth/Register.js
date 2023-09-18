@@ -2,6 +2,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FormInput from "./FormInput";
 import { useState } from "react";
+import { auth, db } from "../firebase/firebaseConfig";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { toast } from "react-toastify";
+import { addDoc, collection } from "firebase/firestore";
 
 const inputs = [
   {
@@ -9,7 +13,8 @@ const inputs = [
     name: "email",
     label: "Email",
     placeholder: "Email",
-    type: "text",
+    type: "email",
+    required: true,
   },
   {
     id: 2,
@@ -17,6 +22,7 @@ const inputs = [
     label: "password",
     placeholder: "Password",
     type: "password",
+    required: true,
   },
   {
     id: 3,
@@ -24,6 +30,7 @@ const inputs = [
     label: "First Name",
     placeholder: "Place your First name",
     type: "text",
+    required: true,
   },
   {
     id: 4,
@@ -31,6 +38,7 @@ const inputs = [
     label: "Last Name",
     placeholder: "Place your last name",
     type: "text",
+    required: true,
   },
 ];
 
@@ -42,9 +50,28 @@ function Register() {
     setForm({ ...form, [name]: value });
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
+
+    try {
+      const { email, password, fName, lName } = form;
+      const authPromise = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = await authPromise;
+      const data = { email, fName, lName };
+
+      const docRef = await addDoc(collection(db, "users"), {
+        ...data,
+      });
+
+      console.log(docRef);
+      toast.success("success");
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
