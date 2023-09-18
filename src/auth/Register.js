@@ -61,6 +61,7 @@ function Register() {
         password
       );
       const user = await authPromise;
+      console.log(authPromise.id);
       const data = { email, fName, lName };
 
       const docRef = await addDoc(collection(db, "users"), {
