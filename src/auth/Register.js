@@ -5,7 +5,7 @@ import { useState } from "react";
 import { auth, db } from "../firebase/firebaseConfig";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 const inputs = [
   {
@@ -60,15 +60,14 @@ function Register() {
         email,
         password
       );
-      const user = await authPromise;
-      console.log(authPromise.id);
+      const { user } = await authPromise;
+      console.log(user.uid);
       const data = { email, fName, lName };
 
-      const docRef = await addDoc(collection(db, "users"), {
-        ...data,
+      const docRef = await setDoc(doc(db, "users", user.uid), {
+        data,
       });
 
-      console.log(docRef);
       toast.success("success");
     } catch (error) {
       toast.error(error.message);
