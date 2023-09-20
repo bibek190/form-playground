@@ -3,25 +3,31 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
+import Header from "./Header";
+import Cards from "./Card";
+import { Col, Row } from "react-bootstrap";
 
 function Home() {
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <>
+      <Header />
+      <h1>This is the home page</h1>
       <Container>
-        <Navbar.Brand href="#home">React FireBase</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
-            <Link to="/login" className="p-3">
-              Login
-            </Link>
-            <Link to="/register" className="p-3">
-              Register
-            </Link>
-          </Nav>
-        </Navbar.Collapse>
+        <Row>
+          <Col className="d-flex flex-wrap gap-2">
+            <Cards />
+            <Cards />
+            <Cards />
+            <Cards />
+            <Cards />
+            <Cards />
+            <Cards />
+            <Cards />
+            <Cards />
+          </Col>
+        </Row>
       </Container>
-    </Navbar>
+    </>
   );
 }
 
